@@ -10,12 +10,34 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     public function getEndpoint()
     {
-        return $this->getTestMode() ? $this->testHost : $this->host;
+        $endPoint = $this->getTestMode() ? $this->getSandboxEndPoint() : $this->getProductionEndPoint();
+    
+        return $this->endPoint = $endPoint;
     }
 
     public function setEndpoint($endpoint)
     {
         $this->endpoint = $endpoint;
+    }
+    
+    public function getSandboxEndPoint()
+    {
+        return $this->getParameter('sandboxEndPoint');
+    }
+    
+    public function setSandboxEndPoint($value)
+    {
+        return $this->setParameter('sandboxEndPoint', $value);
+    }
+    
+    public function getProductionEndPoint()
+    {
+        return $this->getParameter('productionEndPoint');
+    }
+    
+    public function setProductionEndPoint($value)
+    {
+        return $this->setParameter('productionEndPoint', $value);
     }
 
     public function getUsername()
@@ -66,6 +88,56 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     public function setOrderNumber($value)
     {
         return $this->setParameter('order_number', $value);
+    }
+    
+    public function getRefNo()
+    {
+        return $this->getParameter('ref_no');
+    }
+    
+    public function setRefNo($value)
+    {
+        return $this->setParameter('ref_no', $value);
+    }
+    
+    public function getMemo()
+    {
+        return $this->getParameter('memo');
+    }
+    
+    public function setMemo($value)
+    {
+        return $this->setParameter('memo', $value);
+    }
+    
+    public function getTerminalName()
+    {
+        return $this->getParameter('terminal_name');
+    }
+    
+    public function setTerminalName($value)
+    {
+        return $this->setParameter('terminal_name', $value);
+    }
+    
+    public function getShiftId()
+    {
+        return $this->getParameter('shift_id');
+    }
+    
+    public function setShiftId($value)
+    {
+        return $this->setParameter('shift_id', $value);
+    }
+    
+    public function getOperatorId()
+    {
+        return $this->getParameter('operator_id');
+    }
+    
+    public function setOperatorId($value)
+    {
+        return $this->setParameter('operator_id', $value);
     }
 
     protected function getHttpMethod()

@@ -6,7 +6,7 @@ class CreateCardRequest extends AbstractRequest
 {
     public function getEndpoint()
     {
-        $endPoint =  $this->getTestMode() ? $this->testHost : $this->host;
+        $endPoint = $this->getTestMode() ? $this->getSandboxEndPoint() : $this->getProductionEndPoint();
         return $endPoint . '/ZeroAuth';
     }
 
@@ -18,20 +18,21 @@ class CreateCardRequest extends AbstractRequest
         if($this->getCard()) {
 
             $data = [
-                'InvoiceNo' => 1,
-                'RefNo' => 1,
-                'Memo' => 'MPS Example JSON v1.0',
                 'Frequency' => 'Recurring',
                 'RecordNo' => 'RecordNumberRequested',
-                'TerminalName' => 'MPS Terminal',
-                'ShiftID' => 'MPS Shift',
-                'OperatorID' => 'MPS Operator',
                 'AcctNo' => $this->getCard()->getNumber(),
                 'ExpDate' => $this->getCard()->getExpiryDate('my'),
                 'Address' => $this->getCard()->getBillingAddress1(),
                 'Zip' => $this->getCard()->getBillingPostcode(),
                 'CVVData' => $this->getCard()->getCvv()
             ];
+    
+            if ($orderNo = $this->getOrderNumber()) $data['InvoiceNo'] = $orderNo;
+            if ($refNo = $this->getRefNo()) $data['RefNo'] = $refNo;
+            if ($memo = $this->getMemo()) $data['Memo'] = $memo;
+            if ($terminalName = $this->getMemo()) $data['TerminalName'] = $terminalName;
+            if ($shiftId = $this->getShiftId()) $data['ShiftID'] = $shiftId;
+            if ($operatorId = $this->getOperatorId()) $data['OperatorID'] = $operatorId;
         }
 
         return json_encode($data);

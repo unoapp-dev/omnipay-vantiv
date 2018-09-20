@@ -2,12 +2,12 @@
 
 namespace Omnipay\Vantiv\Message;
 
-class PurchaseRequest extends AbstractRequest
+class AuthorizeRequest extends AbstractRequest
 {
     public function getEndpoint()
     {
         $endPoint = $this->getTestMode() ? $this->getSandboxEndPoint() : $this->getProductionEndPoint();
-        return $endPoint . '/SaleByRecordNo';
+        return $endPoint . '/PreAuthByRecordNo';
     }
 
     public function getData()
@@ -16,7 +16,9 @@ class PurchaseRequest extends AbstractRequest
 
         $data = [
             'InvoiceNo' => $this->getOrderNumber(),
-            'Purchase' => $this->getAmount()
+            'Name' => 'Authorize-'.$this->getOrderNumber(),
+            'Purchase' => $this->getAmount(),
+            'Authorize' => $this->getAmount()
         ];
     
         if ($refNo = $this->getRefNo()) $data['RefNo'] = $refNo;
